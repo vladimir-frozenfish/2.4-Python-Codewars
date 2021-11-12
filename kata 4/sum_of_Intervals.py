@@ -57,33 +57,77 @@ def sum_of_intervals(intervals):
 
     """цикл по всем интервалам"""
     for pair in intervals:
+        left_barier = 0
+        right_barier = 0
+
+        left_valeu = pair[0]
+        right_value = pair[1]
 
         """цикл по результирующему списку интервалов.
         за раз берется один интервал (два числа)
-        чикл с конца"""
+        чикл с конца
+        проверка для левого значени интервала"""
         for i in range(len(result_list)-1, -1, -2):
 
-            """если проверяемый интервал больше последнего
-            (в него не входит) в результирующем листе, то
-            он добавляется в результирующий лист"""
-            if pair[0] > result_list[i]:
-                result_list.append(pair[0])
-                result_list.append(pair[1])
+            """первая проверка - если первое значение интервала меньше первого 
+            значение в результирующем списке, то оно сразу добавляется в список 
+            вначале дважы, для сохранения парности интервалов"""
+            if left_valeu < result_list[0]:
+                result_list.insert(0, left_valeu)
+                result_list.insert(0, left_valeu)
                 break
+
+            """если проверяемое значение больше последнего
+            значения, то
+            он добавляется в результирующий лист дважды, для сохранения
+            парности интервалов"""
+            if left_valeu > result_list[i]:
+                result_list.insert(i+1, left_valeu)
+                result_list.insert(i+1, left_valeu)
+                left_barier = i+1
+                break
+            elif left_valeu <= result_list[i] and left_valeu >= result_list[i-1]:
+                left_barier = i-1
+                break
+
+        """цикл по результирующему списку интервалов.
+        за раз берется один интервал (два числа)
+        цикл с конца проверка для правого значени интервала"""
+        for i in range(len(result_list) - 1, -1, -2):
+
+            """если проверяемое значение больше последнего
+            значения, то он добавляется в результирующий лист"""
+            if right_value > result_list[i]:
+                result_list.insert(i + 1, right_value)
+                right_barier = i + 1
+                break
+            elif right_value <= result_list[i] and right_value >= result_list[i - 1]:
+                right_barier = i
+                break
+
+        """удаление лишних интервалов в границах барьеров"""
+        del result_list[left_barier+1 : right_barier]
+
+    #print('Финиш:', result_list)
 
     return counting_sum_of_intervals(result_list)
 
 
 # интервалы без вхождений друг в друга и последующий больше предыдующего
-print(sum_of_intervals([(1, 4), (6, 10), (12, 16)]) == 11)
+#print(sum_of_intervals([(1, 4), (6, 10), (12, 16)]) == 11)
 
 
-'''
-print(sum_of_intervals([(1, 5)]) == 4)
-print(sum_of_intervals([(1, 5), (6, 10)]) == 8)
-print(sum_of_intervals([(1, 5), (1, 5)]) == 4)
-print(sum_of_intervals([(1, 4), (7, 10), (3, 5)]) == 7)
-'''
+
+#print(sum_of_intervals([(1, 5)]) == 4)
+#print(sum_of_intervals([(1, 5), (6, 10)]) == 8)
+#print(sum_of_intervals([(1, 5), (1, 5)]) == 4)
+#print(sum_of_intervals([(1, 4), (7, 10), (3, 5)]) == 7)
+
+#print(sum_of_intervals([(1, 4), (7, 10), (3, 5), (0, 20)]) == 20)
+
+print(sum_of_intervals([[1,5],[10, 20],[1, 6],[16, 19],[5, 11], [-5, -3]]) == 21)
+
+
 
 '''
 test.assert_equals(sum_of_intervals([(1, 5)]), 4)
