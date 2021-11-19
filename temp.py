@@ -1,7 +1,5 @@
 x = [1, 2, 3, 4]
-x.insert(10, 5)
-print(x)
-del x[1:3]
+x += [2]
 print(x)
 
 
