@@ -1,6 +1,8 @@
-x = [1, 2, 3, 4]
-x += [2]
-print(x)
+x = [1, 2, 5, 4]
+if x[2]:
+    print(True)
+else:
+    print(False)
 
 
 
