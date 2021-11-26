@@ -17,26 +17,26 @@ and that lastDigit of an empty list equals to 1.
 def last_digit(lst):
     if lst == []:
         return 1
+    elif len(lst) == 1:
+        return lst[0] % 10
 
     lst = [] + lst
     i = len(lst)-1
     while i >= 2:
-        if lst[i-1] % 10 == 0:
+        if lst[i-1] % 10 == 0 and lst[i-1] != 0:
             lst.pop()
             lst.pop()
             lst.append(100)
         else:
-            lst.append(pow(lst.pop(i-1), lst.pop(), 100))
+            lst.append(pow(lst.pop(i-1), lst.pop(), 1000))
         i -= 1
 
     return pow(lst[0], lst[1], 10)
 
 print(last_digit([499942, 898102, 846073]) == 6)
 
-print(last_digit([12, 30, 21]))
-print(last_digit([12, 30, 21]) == 6)
 
-print(pow(30, 21, 100)+100)
+
 
 """
     ([], 1),
