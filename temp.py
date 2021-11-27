@@ -1,6 +1,7 @@
-list_a = [1,2,3,4]
-list_a.append(list_a.pop(2)*list_a.pop())
-print(0**1)
+string = 'naimksvpjoc'
+
+new_string = ''.join(sorted(string))
+print(new_string)
 
 '''
 matrix = [[1, 2, 3],
