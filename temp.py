@@ -1,8 +1,3 @@
-string = 'naimksvpjoc'
-
-new_string = ''.join(sorted(string))
-print(new_string)
-
 '''
 matrix = [[1, 2, 3],
           [8, 9, 4],
