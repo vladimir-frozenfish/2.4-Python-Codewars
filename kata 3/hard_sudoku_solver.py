@@ -1,42 +1,7 @@
-"""
-Write a function that will solve a 9x9 Sudoku puzzle.
-The function will take one argument consisting of
-the 2D puzzle array, with the value 0 representing
-an unknown square.
-
-The Sudokus tested against your
-function will be "easy" (i.e. determinable;
-there will be no need to assume and test
-possibilities on unknowns) and can be
-solved with a brute-force approach.
-
-puzzle = [[5,3,0,0,7,0,0,0,0],
-          [6,0,0,1,9,5,0,0,0],
-          [0,9,8,0,0,0,0,6,0],
-          [8,0,0,0,6,0,0,0,3],
-          [4,0,0,8,0,3,0,0,1],
-          [7,0,0,0,2,0,0,0,6],
-          [0,6,0,0,0,0,2,8,0],
-          [0,0,0,4,1,9,0,0,5],
-          [0,0,0,0,8,0,0,7,9]]
-
-sudoku(puzzle)
-# Should return
- [[5,3,4,6,7,8,9,1,2],
-  [6,7,2,1,9,5,3,4,8],
-  [1,9,8,3,4,2,5,6,7],
-  [8,5,9,7,6,1,4,2,3],
-  [4,2,6,8,5,3,7,9,1],
-  [7,1,3,9,2,4,8,5,6],
-  [9,6,1,5,3,7,2,8,4],
-  [2,8,7,4,1,9,6,3,5],
-  [3,4,5,2,8,6,1,7,9]
-"""
-
 def get_list(puzzle, y, x):
     """получение трех списков для сравнения"""
-    row = puzzle[y]
-    columns = [i[x] for i in puzzle]
+    row = set(puzzle[y])
+    columns = set([i[x] for i in puzzle])
     square = []
 
     """получение списка из соответствующего квадрата"""
@@ -64,6 +29,8 @@ def get_list(puzzle, y, x):
         for i in range(3):
             square.append(puzzle[j+add_j[y]][i+add_i[x]])
 
+    square = set(square)
+
     return row, columns, square
 
 
@@ -88,8 +55,8 @@ def find_to_insert(puzzle, y, x, start_find):
     return False
 
 
-def sudoku(puzzle):
-    puzzle = puzzle
+def solve(board):
+    puzzle = board
 
     """создаем вспомогательный список,
     в котором будут хранится списки из трех значений
@@ -147,23 +114,27 @@ solution = [[5, 3, 4, 6, 7, 8, 9, 1, 2],
             [2, 8, 7, 4, 1, 9, 6, 3, 5],
             [3, 4, 5, 2, 8, 6, 1, 7, 9]]
 
-x = sudoku(puzzle)
+x = solve(puzzle)
 for i in x:
     print(i)
 
-print(sudoku(puzzle) == solution)
+print(solve(puzzle) == solution)
 
+"""
+Сложное судоку с 17 подсказками. 
+Алгоритмом грубой силы решается несколько минут.
+Первый ряд - 987654321
+"""
+puzzle = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 3, 0, 8, 5],
+          [0, 0, 1, 0, 2, 0, 0, 0, 0],
+          [0, 0, 0, 5, 0, 7, 0, 0, 0],
+          [0, 0, 4, 0, 0, 0, 1, 0, 0],
+          [0, 9, 0, 0, 0, 0, 0, 0, 0],
+          [5, 0, 0, 0, 0, 0, 0, 7, 3],
+          [0, 0, 2, 0, 1, 0, 0, 0, 0],
+          [0, 0, 0, 0, 4, 0, 0, 0, 9]]
 
-puzzle = [[0, 0, 7, 0, 0, 5, 0, 0, 6],
-          [0, 3, 0, 0, 8, 0, 0, 1, 0],
-          [5, 0, 0, 4, 0, 0, 9, 0, 0],
-          [9, 0, 0, 1, 0, 0, 8, 0, 0],
-          [0, 4, 0, 0, 6, 0, 0, 5, 0],
-          [0, 0, 5, 0, 0, 9, 0, 0, 2],
-          [0, 0, 3, 0, 0, 8, 0, 0, 1],
-          [0, 7, 0, 0, 3, 0, 0, 6, 0],
-          [2, 0, 0, 5, 0, 0, 3, 0, 0]]
-
-x = sudoku(puzzle)
+x = solve(puzzle)
 for i in x:
     print(i)
