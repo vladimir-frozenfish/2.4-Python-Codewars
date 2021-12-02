@@ -74,20 +74,18 @@ def division(expression):
 def from_string_to_list(math_string):
     """функция перевода математического выражения
     из строки в список"""
-    numbers = {
-        '0': 0,
-        '1': 1,
-        '2': 2,
-        '3': 3,
-        '4': 4,
-        '5': 5,
-        '6': 6,
-        '7': 7,
-        '8': 8,
-        '9': 9,
-    }
 
-    math_list = [numbers[math_string[0]], math_string[1], numbers[math_string[2]]]
+    numbers = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+    math_list = []
+
+    for i in range(len(math_string)):
+        if math_string[i] in numbers:
+            math_list.append(int(math_string[i]))
+        elif math_string[i] == ' ':
+            continue
+        else:
+            math_list.append(math_string[i])
+
     return math_list
 
 def calc(expression):
@@ -98,11 +96,19 @@ def calc(expression):
         '/': division
     }
 
+    """вызов функции перевода математического 
+    выражения из строки в список"""
     math_list = from_string_to_list(expression)
+
+    """если математический список состоит из одного элемента, 
+    т.е. числа, то он и возвращается"""
+    if len(math_list) == 1:
+        return math_list[0]
 
     return math_def[math_list[1]](math_list)
 
 
+print(calc('1'))
 print(calc('6+2'))
 print(calc('6-2'))
 print(calc('6*2'))
