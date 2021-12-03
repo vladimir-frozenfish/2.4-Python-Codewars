@@ -74,15 +74,20 @@ def division(expression):
 def from_string_to_list(math_string):
     """функция перевода математического выражения
     из строки в список"""
-
+    math_string = math_string.replace(' ', '')
     numbers = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
     math_list = []
+    number = ''
 
     for i in range(len(math_string)):
         if math_string[i] in numbers:
-            math_list.append(int(math_string[i]))
-        elif math_string[i] == ' ':
-            continue
+            number += math_string[i]
+            if math_string[i+1:i+2] not in numbers:
+                math_list.append(int(number))
+                number = ''
+        elif math_string[i] == '-' and math_string[i-1:i] not in numbers:
+            math_list.append(-1)
+            math_list.append('*')
         else:
             math_list.append(math_string[i])
 
@@ -98,22 +103,27 @@ def calc(expression):
 
     """вызов функции перевода математического 
     выражения из строки в список"""
-    math_list = from_string_to_list(expression)
+    math_list = (from_string_to_list(expression))
 
-    """если математический список состоит из одного элемента, 
-    т.е. числа, то он и возвращается"""
-    if len(math_list) == 1:
-        return math_list[0]
+    """список для помещения туда двух чисел и действия"""
+    math_expression = []
 
-    return math_def[math_list[1]](math_list)
+    i = 0
+    while len(math_list) > 1:
+        """помещение в выражение двух чисел и действие
+        пока последовательно для простого выражения без скобок"""
+        math_expression.append(math_list[i])
+        math_expression.append(math_list[i+1])
+        math_expression.append(math_list[i+2])
+
+        del math_list[i:i+3]
+        math_list.insert(i, math_def[math_expression[1]](math_expression))
+        math_expression = []
+
+    return math_list[0]
 
 
-print(calc('1'))
-print(calc('6+2'))
-print(calc('6-2'))
-print(calc('6*2'))
-print(calc('6/2'))
-
+print(calc('2+2-6+18'))
 
 
 """
