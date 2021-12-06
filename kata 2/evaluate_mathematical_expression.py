@@ -108,10 +108,27 @@ def calc(expression):
     """список для помещения туда двух чисел и действия"""
     math_expression = []
 
-    i = 0
+
     while len(math_list) > 1:
+        """помещение в выражение сначала действий где есть * или /"""
+        i = 1
+        while '*' in math_list or '/' in math_list:
+            if math_list[i] == '*' or math_list[i] == '/':
+                math_expression.append(math_list[i - 1])
+                math_expression.append(math_list[i])
+                math_expression.append(math_list[i + 1])
+
+                del math_list[i-1:i + 2]
+                math_list.insert(i-1, math_def[math_expression[1]](math_expression))
+                math_expression = []
+
+                i = 1
+            else:
+                i += 1
+
         """помещение в выражение двух чисел и действие
         пока последовательно для простого выражения без скобок"""
+        i = 0
         math_expression.append(math_list[i])
         math_expression.append(math_list[i+1])
         math_expression.append(math_list[i+2])
@@ -123,7 +140,7 @@ def calc(expression):
     return math_list[0]
 
 
-print(calc('2+2-6+18'))
+print(calc('2+2-6/6+18*2/3+-1'))
 
 
 """
