@@ -59,17 +59,21 @@ def amount(expression):
     """функция посчета суммы двух чисел"""
     return expression[0] + expression[2]
 
+
 def difference(expression):
     """функция посчета разности двух чисел"""
     return expression[0] - expression[2]
+
 
 def multiplication(expression):
     """функция посчета произведение двух чисел"""
     return expression[0] * expression[2]
 
+
 def division(expression):
     """функция посчета частного двух чисел"""
     return expression[0] / expression[2]
+
 
 def from_string_to_list(math_string):
     """функция перевода математического выражения
@@ -82,18 +86,27 @@ def from_string_to_list(math_string):
     for i in range(len(math_string)):
         if math_string[i] in numbers:
             number += math_string[i]
-            if math_string[i+1:i+2] not in numbers:
+            if math_string[i + 1:i + 2] not in numbers:
                 math_list.append(int(number))
                 number = ''
-        elif math_string[i] == '-' and math_string[i-1:i] not in numbers:
-            math_list.append(-1)
-            math_list.append('*')
+
+        elif math_string[i] == '-' and math_string[i - 1:i] not in numbers and math_string[i - 1:i] != ')':
+            """разбираемся с минусом"""
+            if math_string[i - 1:i] == '/':
+                math_list.insert(-1, '*')
+                math_list.insert(-1, -1)
+            else:
+                math_list.append(-1)
+                math_list.append('*')
         else:
             math_list.append(math_string[i])
 
     return math_list
 
-def calc(expression):
+
+def calculating(math_list):
+    """функция подсчета математического выражения
+    без скобок, с учетом приоритета * и /"""
     math_def = {
         '+': amount,
         '-': difference,
@@ -101,15 +114,12 @@ def calc(expression):
         '/': division
     }
 
-    """вызов функции перевода математического 
-    выражения из строки в список"""
-    math_list = (from_string_to_list(expression))
-
     """список для помещения туда двух чисел и действия"""
+    math_list = math_list
     math_expression = []
 
-
     while len(math_list) > 1:
+        print(math_list)
         """помещение в выражение сначала действий где есть * или /"""
         i = 1
         while '*' in math_list or '/' in math_list:
@@ -118,29 +128,57 @@ def calc(expression):
                 math_expression.append(math_list[i])
                 math_expression.append(math_list[i + 1])
 
-                del math_list[i-1:i + 2]
-                math_list.insert(i-1, math_def[math_expression[1]](math_expression))
+                del math_list[i - 1:i + 2]
+                math_list.insert(i - 1, math_def[math_expression[1]](math_expression))
                 math_expression = []
 
                 i = 1
             else:
                 i += 1
 
-        """помещение в выражение двух чисел и действие
-        пока последовательно для простого выражения без скобок"""
-        i = 0
-        math_expression.append(math_list[i])
-        math_expression.append(math_list[i+1])
-        math_expression.append(math_list[i+2])
+        if len(math_list) >= 3:
+            """помещение в выражение двух чисел и действие
+            пока последовательно для простого выражения без скобок"""
+            i = 0
+            math_expression.append(math_list[i])
+            math_expression.append(math_list[i + 1])
+            math_expression.append(math_list[i + 2])
 
-        del math_list[i:i+3]
-        math_list.insert(i, math_def[math_expression[1]](math_expression))
-        math_expression = []
+            del math_list[i:i + 3]
+            math_list.insert(i, math_def[math_expression[1]](math_expression))
+            math_expression = []
 
     return math_list[0]
 
 
-print(calc('2+2-6/6+18*2/3+-1'))
+def calc(expression):
+    """вызов функции перевода математического
+    выражения из строки в список"""
+    math_list = (from_string_to_list(expression))
+
+    """выделение из всего выражения скобок,
+    и вычисление выражения в этих скобках и так пока 
+    не закончаться скобки"""
+    bracket_begin = 0
+    i = 0
+    while ('(' or ')') in math_list and i < len(math_list):
+        if math_list[i] == '(':
+            bracket_begin = i
+            i += 1
+        elif math_list[i] == ')':
+            bracket_end = i
+            math_list.insert(bracket_begin, calculating(math_list[bracket_begin + 1:bracket_end]))
+            del math_list[bracket_begin + 1:bracket_end + 2]
+            i = 0
+        else:
+            i += 1
+
+    result = calculating(math_list)
+
+    return result
+
+
+print(calc('(-11) - (-19 * -2 - (12)) - (52 * ((((-97 - -18)))) * -75)'))
 
 
 """
