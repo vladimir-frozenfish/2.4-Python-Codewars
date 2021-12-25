@@ -1,8 +1,5 @@
-y = [0,1,2,3,4,5,6]
-
-x = -5 or 10
-
-print(x in y)
+x = [1,2,3]
+print(x.index(2))
 
 
 

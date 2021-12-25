@@ -119,7 +119,7 @@ def calculating(math_list):
     math_expression = []
 
     while len(math_list) > 1:
-        print(math_list)
+        # print(math_list)
         """помещение в выражение сначала действий где есть * или /"""
         i = 1
         while '*' in math_list or '/' in math_list:
