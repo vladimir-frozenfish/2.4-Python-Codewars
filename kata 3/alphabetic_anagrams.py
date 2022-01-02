@@ -32,7 +32,7 @@ BOOKKEEPER = 10743
 
 
 def factorial(i):
-    if i == 0:
+    if i == 1:
         return 1
     else:
         fact = 1
@@ -41,22 +41,51 @@ def factorial(i):
         return fact
 
 
+def string_to_dict(string):
+    string_dict = dict()
+    for i in string:
+        if i in string_dict:
+            string_dict[i] += 1
+        else:
+            string_dict[i] = 1
+    return string_dict
+
+
+def dict_to_factorial(string_dict):
+    dict_factorial = 1
+    for i in string_dict:
+        dict_factorial *= factorial(string_dict[i])
+    return dict_factorial
+
+
 def listPosition(word):
     """Возвращает номер перестановки данной строки
     Return the anagram list position of the word"""
     sort_word = sorted(word)
     len_word = len(sort_word)
     position = 1
+    word_dict = string_to_dict(word)
 
     for i in word:
-        position += sort_word.index(i) * factorial(len_word-1)
+        dict_factorial = dict_to_factorial(word_dict)
+        position += (sort_word.index(i) * factorial(len_word-1) // dict_factorial)
+        word_dict[i] -= 1
         len_word -= 1
         sort_word.remove(i)
 
     return position
 
+
+print(listPosition('IMMUNOELECTROPHORETICALLY'))
+print(718393983731145698173)
+
+"""
+print(listPosition('ABAB'))
+print(listPosition('ABAB') == 2)
+
 print(listPosition('QUESTION'))
 print(listPosition('QUESTION') == 24572)
+
 
 print(listPosition('BOOKKEEPER'))
 print(listPosition('BOOKKEEPER') == 10743)
@@ -65,6 +94,4 @@ print(listPosition('AABA'))
 print(listPosition('AABA') == 2)
 
 print(listPosition('FCEBAD') == 669)
-
-print(listPosition('ABAB'))
-print(listPosition('ABAB') == 2)
+"""
