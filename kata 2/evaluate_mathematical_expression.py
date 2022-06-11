@@ -55,26 +55,6 @@ NOTE: eval and exec are disallowed in your solution.
 """
 
 
-def amount(expression):
-    """функция посчета суммы двух чисел"""
-    return expression[0] + expression[2]
-
-
-def difference(expression):
-    """функция посчета разности двух чисел"""
-    return expression[0] - expression[2]
-
-
-def multiplication(expression):
-    """функция посчета произведение двух чисел"""
-    return expression[0] * expression[2]
-
-
-def division(expression):
-    """функция посчета частного двух чисел"""
-    return expression[0] / expression[2]
-
-
 def from_string_to_list(math_string):
     """функция перевода математического выражения
     из строки в список"""
@@ -108,10 +88,10 @@ def calculating(math_list):
     """функция подсчета математического выражения
     без скобок, с учетом приоритета * и /"""
     math_def = {
-        '+': amount,
-        '-': difference,
-        '*': multiplication,
-        '/': division
+        '+': lambda expression: expression[0] + expression[2],
+        '-': lambda expression: expression[0] - expression[2],
+        '*': lambda expression: expression[0] * expression[2],
+        '/': lambda expression: expression[0] / expression[2],
     }
 
     """список для помещения туда двух чисел и действия"""
